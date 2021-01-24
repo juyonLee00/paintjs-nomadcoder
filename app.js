@@ -1,22 +1,24 @@
 const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
+const mode = document.getElementById("jsMode");
 
 canvas.width = document.getElementsByClassName("canvas")[0].offsetWidth;
 canvas.height = document.getElementsByClassName("canvas")[0].offsetHeight;
 
 ctx.strokeStyle ="orchid";
 ctx.lineWidth = 2.5;
-
+ctx.fillStyle = "salmon";
 let painting = false;
+let filling = false;
 
 function stopPainting(){
     painting = false;
 }
 
-function startPainting(){
+const startPainting = (event) => {
     painting = true;
-}
+};
 
 function onMouseMove(event){
     // console.log(event);
@@ -33,18 +35,35 @@ function onMouseMove(event){
     }
 }
 
-function onMouseDown(event){
+/*function onMouseDown(event){
     painting = true;
-}
+}*/
 
 // function onMouseUp(event){
 //     // painting = false;
 //     stopPainting()
 // }
 
+function handleModeClick(){
+    if(filling === true) {
+        filling = false;
+        mode.innerText = "Fill";
+    } else {
+        filling = true;
+        mode.innerText = "Paint";
+    }
+}
+
 function handleColorClick (event){
     const color = event.target.style.backgroundColor;
     ctx.strokeStyle = color; //overide해서 색 바뀜
+    ctx.fillStyle = color;
+}
+
+function handleCanvasClick() {
+    if(filling){
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 }
 
 if(canvas){
@@ -52,9 +71,13 @@ if(canvas){
     canvas.addEventListener("mousedown", startPainting);
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
+    canvas.addEventListener("click", handleCanvasClick);
 }
 
 Array.from(colors).forEach(color => 
     color.addEventListener("click", handleColorClick));
 
+if(mode) {
+    mode.addEventListener("click", handleModeClick);
+}
 //console.log(Array.from(colors));
