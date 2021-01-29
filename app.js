@@ -2,13 +2,17 @@ const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const mode = document.getElementById("jsMode");
+const range = document.getElementById("jsRange");
+const saveBtn = document.getElementById("jsSave");
+
 
 canvas.width = document.getElementsByClassName("canvas")[0].offsetWidth;
 canvas.height = document.getElementsByClassName("canvas")[0].offsetHeight;
 
 ctx.strokeStyle ="orchid";
 ctx.lineWidth = 2.5;
-ctx.fillStyle = "salmon";
+ctx.fillStyle = "salmon"; //설정x시 저장시 투명.
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 let painting = false;
 let filling = false;
 
@@ -65,6 +69,22 @@ function handleCanvasClick() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 }
+function handleRangeChange(event){
+    const size = event.target.value;
+    ctx.lineWidth = size;
+}
+
+function handleCM(event){ //오른쪽마우스클릭 불가.
+    event.preventDefault();
+}
+
+function handleSaveClick(){
+    const image = canvas.toDataURL("image/png"); //이미지 형식으로 데이터 받아오게 설정
+    const link = document.createElement("a"); //anchor a 태그.
+    link.href = image;//이미지 URL
+    link.download = "downloadimg"; //다운로드하는 이미지이름
+    link.click();//거짓으로 클릭 설정
+}
 
 if(canvas){
     canvas.addEventListener("mousemove", onMouseMove);
@@ -72,6 +92,17 @@ if(canvas){
     canvas.addEventListener("mouseup", stopPainting);
     canvas.addEventListener("mouseleave", stopPainting);
     canvas.addEventListener("click", handleCanvasClick);
+    canvas.addEventListener("contextmenu", handleCM);
+}
+
+if(colors){
+    Array.from(colors).forEach(color =>
+        color.addEventListener("click", handleColorClick)
+        );
+}
+
+if(range){
+    range.addEventListener("input", handleRangeChange)
 }
 
 Array.from(colors).forEach(color => 
@@ -79,5 +110,9 @@ Array.from(colors).forEach(color =>
 
 if(mode) {
     mode.addEventListener("click", handleModeClick);
+}
+
+if(saveBtn){
+    saveBtn.addEventListener("click", handleSaveClick);
 }
 //console.log(Array.from(colors));
