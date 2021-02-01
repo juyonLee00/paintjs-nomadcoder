@@ -13,5 +13,7 @@ https://meyerweb.com/eric/tools/css/reset/
 
 https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineWidth
 
+https://flatuicolors.com/
+
 # 추가적으로 발전시킬 수 있는 부분
 캐치마인드라는 게임처럼 실시간 채팅을 가능하게 업그레이드 시킬 수 있고, 3d 모델을 그릴 수 있는 라이브러리를 추가해 3d 그림판같은 기능을 갖는 것도 좋을 것 같다.
